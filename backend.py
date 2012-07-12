@@ -1,8 +1,12 @@
 
-import webapp2
+from google.appengine.api import background_thread, logservice 
 from threading import Lock
-
+import webapp2
+import time
 import model
+import logging
+
+logger = logging.getLogger(__name__)
 
 # singleton in-memory structure, holds array of ints
 leaderboard = []
@@ -16,6 +20,8 @@ def add_to_leaderboard(value):
 		leaderboard.append(value)
 
 def compute_leaderboard():
+	logger.debug("Computing leaderboard")
+	
 	global leaderboard
 	global leaderboard_lock
 	
@@ -25,12 +31,23 @@ def compute_leaderboard():
 	
 	lead = model.LeaderBoard(key_name=model.LeaderBoard.INSTANCE, all_scores=old)
 	lead.put()
+	
+def timer_loop():
+	while True:
+		now = time.time()
+		then = now - (now % 180) + 180
+		seconds = then - now
+		logger.debug("Next calculation in " + str(seconds) + " seconds")
+		logservice.flush()
+		time.sleep(seconds)
+		
+		compute_leaderboard()
 
 #
 #
 class Start(webapp2.RequestHandler):
 	def get(self):
-		pass
+		background_thread.start_new_background_thread(timer_loop, [])
 		
 #
 #
@@ -52,3 +69,9 @@ class Compute(webapp2.RequestHandler):
 		compute_leaderboard()
 		self.response.write("done")
 		
+#
+#
+class Noop(webapp2.RequestHandler):
+	def get(self):
+		self.response.write("noop")
+

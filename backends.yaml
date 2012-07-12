@@ -2,3 +2,4 @@ backends:
 - name: leaders
   instances: 1
   class: B1
+  options: public

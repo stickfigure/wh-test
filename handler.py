@@ -32,3 +32,10 @@ class Results(webapp2.RequestHandler):
 		self.response.content_type = "application/json"
 		self.response.write(json.encode(leaderboard.all_scores))
 		
+
+#
+#
+class Noop(webapp2.RequestHandler):
+	def get(self):
+		self.response.write("noop")
+
