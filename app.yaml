@@ -1,5 +1,5 @@
 application: voodoodyne0
-version: wordhero-test
+version: wh-test
 runtime: python27
 api_version: 1
 threadsafe: yes

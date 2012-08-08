@@ -39,3 +39,11 @@ class Noop(webapp2.RequestHandler):
 	def get(self):
 		self.response.write("noop")
 
+#
+#
+class BackendNoop(webapp2.RequestHandler):
+	def get(self):
+		url = backends.get_url("leaders") + "/backend/noop"
+		result = urllib2.urlopen(url)
+		self.response.write(result.read())
+
