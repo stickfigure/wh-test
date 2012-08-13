@@ -47,3 +47,11 @@ class BackendNoop(webapp2.RequestHandler):
 		result = urllib2.urlopen(url)
 		self.response.write(result.read())
 
+#
+#
+class Away(webapp2.RequestHandler):
+	def get(self):
+		url = "http://www.infohazard.org/"
+		result = urllib2.urlopen(url)
+		self.response.write(result.read())
+

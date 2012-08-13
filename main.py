@@ -10,6 +10,7 @@ app = webapp2.WSGIApplication([
 							('/results', handler.Results),
 							('/noop', handler.Noop),
 							('/bnoop', handler.BackendNoop),
+							('/away', handler.Away),
 							('/_ah/start', backend.Start),
 							('/backend/submit', backend.Submit),
 							('/backend/compute', backend.Compute),
